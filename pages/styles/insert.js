@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-const EditStyle = makeStyles(() => ({
+const EditStyle = makeStyles((theme) => ({
   container: {
     height: "100vh",
     width: "100%",
@@ -32,9 +32,16 @@ const EditStyle = makeStyles(() => ({
   },
   fieldset: {
     padding: "1em",
+    "& .MuiSelect-select": {
+      width: "150px",
+    },
   },
   button: {
     height: "3.5em",
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
   },
 }));
 

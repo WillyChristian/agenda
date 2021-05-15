@@ -1,16 +1,19 @@
 import React from "react";
 import {
   Button,
-  makeStyles,
   TextField,
   Typography,
   Container,
+  InputLabel,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 
 import { useFormik } from "formik";
-// import * as Yup from "yup";
+import * as Yup from "yup";
 import Navbar from "./components/Navbar/navbar";
-import EditStyle from "./styles/edit";
+import EditStyle from "./styles/insert";
 
 function getDate() {
   const date = new Date().toString();
@@ -23,7 +26,7 @@ const Cliente = () => {
   //Validacao do formulário
   const formik = useFormik({
     initialValues: {
-      tec_id: "", //tab-0-tecnico-0
+      tec_id: "", //ex.: tab-0-tecnico-0
       obs: "",
       os: "",
       horario: "",
@@ -41,15 +44,12 @@ const Cliente = () => {
         alert("Verifique os dados e tente novamente");
       }
     },
-    // validationSchema: Yup.object({
-    //   obs: Yup.string()
-    //     .max(40, "O campo deve conter no máximo 40 caracteres"),
-    //   os: Yup.number()
-    //     .required("Número da OS é obrigatório"),
-    //   horario: Yup.string()
-    //     .length(11, "Telefone deve conter 11 dígitos")
-    //     .required("Telefone é obrigatório"),
-    // }),
+    validationSchema: Yup.object({
+      obs: Yup.string().max(40, "O campo deve conter no máximo 40 caracteres"),
+      os: Yup.number().required("Número da OS é obrigatório"),
+      horario: Yup.string().required("Horário é obrigatório"),
+      tec_id: Yup.string().required("Horário é obrigatório"),
+    }),
   });
 
   return (
@@ -115,8 +115,28 @@ const Cliente = () => {
               helperText={formik.errors.obs}
               error={formik.errors.obs}
             />
-
-            <TextField
+            <FormControl className={formStyle.formControl}>
+              <InputLabel id="select-label" id="select">
+                Selecione o Técnico
+              </InputLabel>
+              <Select
+                variant="standard"
+                labelId="select-label"
+                name="tec_id"
+                id="tec_id"
+                value={formik.values.tec_id}
+                onChange={formik.handleChange}
+              >
+                {/* <MenuItem value="">
+                  <em>Nenhum</em>
+                </MenuItem> */}
+                <MenuItem value={"tab-0-tecnico-0"}>Messias</MenuItem>
+                <MenuItem value={"tab-1-tecnico-1"}>Rogério</MenuItem>
+                <MenuItem value={"tab-2-tecnico-2"}>Thiago</MenuItem>
+                <MenuItem value={"tab-3-tecnico-3"}>Willy</MenuItem>
+              </Select>
+            </FormControl>
+            {/* <TextField
               id="tec_id"
               label="Selecione o Técnico"
               type="text"
@@ -126,8 +146,7 @@ const Cliente = () => {
               onChange={formik.handleChange}
               helperText={formik.errors.tec_id}
               error={formik.errors.tec_id}
-            />
-
+            /> */}
             <Container>
               <Button type="submit">Cadastrar</Button>
               <Button type="button" onClick={() => formik.resetForm()}>

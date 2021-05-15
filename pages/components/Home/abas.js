@@ -1,11 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { useFormik } from "formik";
-import axios from "axios";
+import React from "react";
 import PropTypes from "prop-types";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import useStyles from "../../styles/abas";
+import Table from "./table";
+
+import axios from "axios";
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `tab-${index}`,
+    "aria-controls": `-tecnico-${index}`,
+  };
+}
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -22,49 +36,9 @@ function TabPanel(props) {
   );
 }
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `tab-${index}`,
-    "aria-controls": `tecnico-${index}`,
-  };
-}
-
-export default function VerticalTabs() {
+export default function VerticalTabs({}) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-
-  const formik = useFormik({
-    initialValues: {},
-  });
-
-  //Salva os dados
-  function SaveData() {
-    const full_date = new Date().toString();
-    const short_date = full_date.slice(0, 15).replaceAll(" ", "_");
-    const body = {
-      data: formik.values,
-      collection: short_date,
-    };
-    axios
-      .post("/api/create", {
-        body,
-      })
-      .then((Response) => {
-        if (Response.status === 200) {
-          alert(`Retorno do servidor: ${Response.statusText}`);
-        } else {
-          alert(
-            `Retorno do servidor:${Response.status} - ${Response.statusText}`
-          );
-        }
-      });
-  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -84,21 +58,28 @@ export default function VerticalTabs() {
         <Tab label="Willy" {...a11yProps(3)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        {/* <Table data={formik} id={a11yProps(0)} /> */}
-        <h1>conteudo</h1>
+        <Table id={a11yProps(0)} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {/* <Table data={formik} id={a11yProps(1)} /> */}
-        <h1>conteudo</h1>
+        <Table id={a11yProps(1)} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        {/* <Table data={formik} id={a11yProps(2)} /> */}
-        <h1>conteudo</h1>
+        <Table id={a11yProps(2)} />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        {/* <Table data={formik} id={a11yProps(3)} /> */}
-        <h1>conteudo</h1>
+        <Table id={a11yProps(3)} />
       </TabPanel>
     </div>
   );
 }
+
+// export async function getServerSideProps(context){
+
+//   const agenda = await axios.get("/api/")
+//   return{
+//     props: {
+
+//     }
+//   }
+
+// }
